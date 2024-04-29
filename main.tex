@@ -120,28 +120,6 @@ Ruler also seeks to provide a framework for rewrite rule synthesis that is more 
 
 Additionally, Ruler uses characteristic vectors (Cvecs) as a generalizable method for equivalence checking. Ruler tags each term in the set of terms $T$ with a Cvec which captures its value under different input values. Cvecs act as fingerprints for a quick equivalence check between terms that does not rely on domain-specific knowledge or complex symbolic reasoning. This facilitates rule discovery in diverse domains, even those with partial operators (like division) or complex semantics.
 
-    % \item \textbf{User-defined cost functions and extraction procedures:} Ruler allows users to provide a cost function that guides the selection of the "best" term from the e-graph during extraction. This allows tailoring the optimization or synthesis process to specific goals.
-
-    % Different extraction procedures can be implemented, ranging from simple AST size minimization to more sophisticated approaches like integer linear programming or genetic algorithms.
-
-% Key Advantages of Ruler:
-%     Efficiency: E-graphs and equality saturation enable compact representation and manipulation of large sets of terms and candidate rules.
-%     Generality: Ruler can synthesize rules for diverse domains by specifying a grammar and interpreter.
-%     Performance: Evaluations show that Ruler generates smaller, more general rulesets significantly faster than existing tools like CVC4.
-%     Effectiveness: Ruler's automatically generated rulesets perform comparably to, and can even surpass, expert-crafted rules in real-world applications like Herbie.
-
-% Case Study: Herbie and Rational Numbers:
-% Ruler successfully replaced Herbie's existing rational number rules with automatically generated ones, achieving similar performance while also uncovering missing rules that resolved a known bug.
-
-% Sensitivity Analyses:
-% The paper explores the impact of various parameters on Ruler's performance and output, including:
-%     Learning Rate: Balancing speed and ruleset size through the number of rules selected in each iteration.
-%     Validation Methods: Comparing model checking, SMT-based verification, and random testing for rule validation.
-%     Cvec Generation Strategies: Evaluating different methods for generating characteristic vectors, including exhaustive and random approaches.
-
-% Limitations and Future Work:
-% The paper acknowledges limitations in areas like heuristic-based rule selection and the potential for further optimization through techniques like stochastic enumeration and side-condition inference.
-
 \subsection{Enumo}
 Enumo~\cite{pal2023enumo} expands on Ruler by proposing a DSL for rewrite rule synthesis tools. This DSL provides operators that allow users to "strategically guide rule inference and incrementally build rulesets" by programmatically growing and shrinking the e-graph of terms, as well as the set of rules. 
 

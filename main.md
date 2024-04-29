@@ -71,14 +71,14 @@ both from an algorithmic and an infrastructure standpoint. Finally, we
 discuss the costs and benefits of rewrite rule synthesis and how methods
 for rewrite rule synthesis could be improved in future work.
 
-# Challenges of Rewrite Rule Synthesis {#sec:challenges}
+# <a name="sec:challenges"></a>Challenges of Rewrite Rule Synthesis
 
 In order to frame the rest of this survey, we now discuss some of the
 primary challenges associated with synthesizing rewrite rules. Some of
 the key dimensions along which rewrite rule synthesis techniques differ
 are as follows:
 
-1.  **Order of enumeration---**In what order does one enumerate over the
+1.  **Order of enumeration**&mdash;In what order does one enumerate over the
     set of remaining possible expressions (on either side of a rewrite
     rule)? What constraints are there on the size of terms? As the size
     of one's grammar or terms increases, the number of possible rules
@@ -89,11 +89,11 @@ are as follows:
     prefer smaller rules that can be combined in different ways to
     explore the full space of rewrites.
 
-2.  **Filtering---**How do you filter out rewrite rules such that only
+2.  **Filtering**&mdash;How do you filter out rewrite rules such that only
     interesting (e.g. useful for optimization, not redundant, etc.) ones
     remain in the search space?
 
-3.  **Verification---**How do you verify that the rewrite rules you
+3.  **Verification**&mdash;How do you verify that the rewrite rules you
     generate are correct and improve programs?
 
 Of course, there is no unified approach for different domains, and the
@@ -114,11 +114,9 @@ succeeds, it provides a confluent and terminating term rewriting system
 that can be used to solve the word problem for the given equational
 theory. However, it may also fail or not terminate. In order to consider
 Knuth-Bendix completion's merits as a rewrite rule synthesis technique,
-we can take a look at where it lies along the dimensions discussed in
-Section [2](#sec:challenges){reference-type="ref"
-reference="sec:challenges"}.
+we can take a look at where it lies along the dimensions discussed [above](#sec:challenges).
 
-1.  **Order of enumeration---**The order of enumeration is a modifiable
+1.  **Order of enumeration**&mdash;The order of enumeration is a modifiable
     parameter in Knuth-Bendix completion, where the steps (Delete,
     Compose, Simplify, Orient, Collapse, Deduce) can be run in a
     user-determined order. The general strategy of utilizing known
@@ -126,7 +124,7 @@ reference="sec:challenges"}.
     rewrites using other known rewrites, are both key techniques that
     can be seen in the other works in this survey.
 
-2.  **Filtering---**Since Knuth-Bendix completion is based on a set of
+2.  **Filtering**&mdash;Since Knuth-Bendix completion is based on a set of
     input equations, not on a grammar, the space of possible terms is
     much more limited than tools which attempt to enumerate all possible
     terms in a given grammar. Beyond this inherent constraint, when
@@ -135,7 +133,7 @@ reference="sec:challenges"}.
     we know that such an ordering exists, and in the algorithm, all
     generated rules $l \rightarrow r$ have $l>r$.
 
-3.  **Verification---**Huet `\cite{huet1980complete}`{=latex} showed in
+3.  **Verification**&mdash;Huet `\cite{huet1980complete}`{=latex} showed in
     1980 that when the algorithm terminates, it defines a valid
     semidecision algorithm for the word problem.
 
@@ -150,6 +148,15 @@ influence on later work whose value we will discuss more extensively.
 
 ## Halide
 
+![](figs/halide_bottomup.png)
+Figure 3 from Newcomb et
+al. `\cite{newcomb2020verifyinghalide}`{=latex} explains how LHS
+patterns are mined from input expressions. In this case,
+$(z+2)+\texttt{min}(x,y-z)$ yields the candidate LHS terms on the right.
+All possible subterms are enumerated, plus copies of those terms where
+subterms of interest (colored in the figure) are replaced by a
+variable.
+
 Halide `\cite{jrk2013halide}`{=latex}, a domain-specific language for
 high-performance image processing pipelines, utilizes a term rewriting
 system with over a thousand hand-written rewrite rules (as of the time
@@ -158,18 +165,9 @@ Halide `\cite{newcomb2020verifyinghalide}`{=latex}). Newcomb et al.
 attempt to recreate Halide's existing rules, as well as generate new
 ones by applying program synthesis techniques.
 
-![Figure 3 from Newcomb et
-al. `\cite{newcomb2020verifyinghalide}`{=latex} explains how LHS
-patterns are mined from input expressions. In this case,
-$(z+2)+\texttt{min}(x,y-z)$ yields the candidate LHS terms on the right.
-All possible subterms are enumerated, plus copies of those terms where
-subterms of interest (colored in the figure) are replaced by a
-variable.](figs/halide_bottomup.png){#fig:halide_bottomup}
-
-1.  **Order of enumeration---**Candidate rule LHSs (left-hand sides) are
+1.  **Order of enumeration**&mdash;Candidate rule LHSs (left-hand sides) are
     enumerated and from input expression of interest, in a bottom-up
-    order. Figure [1](#fig:halide_bottomup){reference-type="ref"
-    reference="fig:halide_bottomup"} RHSs (right-hand sides) are
+    order. RHSs (right-hand sides) are
     generated via 1) "delayed" AC matching, where associativity and
     commutativity are applied to the LHS, and the resulting term is
     passed to the existing TRS, and 2) counterexample-guided inductive
@@ -177,12 +175,12 @@ variable.](figs/halide_bottomup.png){#fig:halide_bottomup}
     synthesis `\cite{solar2009sketching}`{=latex}, to superoptimize the
     LHS.
 
-2.  **Filtering---**Rules are pruned heuristically based on term size;
+2.  **Filtering**&mdash;Rules are pruned heuristically based on term size;
     the authors specifically state that terms must have seven or fewer
     leaves. They also keep a blacklist of LHSs which previously failed
     to generate a rule.
 
-3.  **Verification---**The authors prove that the term rewriting system
+3.  **Verification**&mdash;The authors prove that the term rewriting system
     (TRS) terminates, based on a reduction order that closely matches
     the original TRS (eight existing rules had to be removed). They use
     SMT and Coq to prove that the rewrite rules are correct, i.e.
@@ -202,7 +200,7 @@ synthesized rules are superior to hand-written ones with one exception
 not supported by CEGIS.
 
 One potential downside this work is the size of the generated set of
-rules---around 4000, which is four times the size of the original large,
+rules&mdash;around 4000, which is four times the size of the original large,
 hand-written ruleset. The majority of generated rewrite rules do not
 provide any benefit, and of those that do, they mainly improve memory
 usage and not runtime. This also makes the term rewriting system more
@@ -210,14 +208,15 @@ difficult for both humans and verification tools to reason about,
 although the the authors state that the added rules had no significant
 impact on performance of the compiler itself.
 
-## Ruler {#sec:ruler}
+## <a name="sec:ruler"></a>Ruler
 
-![Figure 4 from Ruler `\cite{nandi2021ruler}`{=latex} shows Ruler's core
+![](figs/ruler_algo.png)
+Figure 4 from Ruler `\cite{nandi2021ruler}`{=latex} shows Ruler's core
 algorithm. Note that at each iteration, all terms up to size $i$ are
 added to the e-graph (Line 6, `add_terms()`). Equivalences between these
 terms are then identified via fingerprinting, and rewrite rules are
 extracted from newly crafted
-e-classes.](figs/ruler_algo.png){#fig:ruler_algo}
+e-classes.
 
 Ruler `\cite{nandi2021ruler}`{=latex} uses equality saturation as a
 rewrite system on the domain of rewrite rules itself. The authors boil
@@ -228,8 +227,7 @@ booleans, bitvectors, and rationals. The three steps are as follows:
 1.  **Enumerate** terms into a set $T$. Terms are enumerated from the
     target domain and represented in an e-graph (equality graph), a data
     structure for efficiently managing equivalence classes of terms. As
-    shown in Figure [2](#fig:ruler_algo){reference-type="ref"
-    reference="fig:ruler_algo"}, at each iteration, all terms up to a
+    shown in the algorithm above, at each iteration, all terms up to a
     specific size are added to the e-graph.
 
 2.  Search $T \times T$ for a set of candidate equalities $C$. Pairs of
@@ -316,10 +314,10 @@ rules, i.e. allowed, exploratory, or all) to grow and collapse the
 e-graph of terms.
 
 ## Isaria
-
-![Figure 1 from Isaria `\cite{thomas2024isaria}`{=latex}: the vector DSL
+![](figs/isaria_dsl.png)
+Figure 1 from Isaria `\cite{thomas2024isaria}`{=latex}: the vector DSL
 used in Isaria and
-Diospyros `\cite{vanhattum2021diospyros}`{=latex}.](figs/isaria_dsl.png){#fig:isaria_dsl}
+Diospyros `\cite{vanhattum2021diospyros}`{=latex}.
 
 Diospyros `\cite{vanhattum2021diospyros}`{=latex} utilizes e-graphs for
 auto-vectorization on digital signal processors (DSPs).
@@ -332,9 +330,7 @@ perfromance in most cases. The modifications to Ruler are as follows:
     computation to vectors. This prevents scalar rewrites being applied
     to already vectorized code, which doesn't make sense. This
     **Filtering** change helps stop the e-graph of terms from blowing
-    up, which as discussed in
-    Section [4.2](#sec:ruler){reference-type="ref"
-    reference="sec:ruler"} is a key challenge with Ruler.
+    up, which as discussed [above](#sec:ruler) is a key challenge with Ruler.
 
 -   Isaria automatically categorize candidate rules into 1) Expansion
     (roughly, scalar to scalar rewrites), 2) Compilation (scalar to
@@ -344,8 +340,7 @@ perfromance in most cases. The modifications to Ruler are as follows:
 
 Again, Isaria demonstrates the scaling challenges of grammar-based
 rewrite rule synthesis. Despite its vector DSL being quite small (see
-Figure [3](#fig:isaria_dsl){reference-type="ref"
-reference="fig:isaria_dsl"}), the authors must employ domain-specific
+figure), the authors must employ domain-specific
 strategies that prevent all possible rewrites from being applied to the
 term e-graph.
 
@@ -360,14 +355,14 @@ pre-process input terms by simplifying them to a form that is friendly
 to the solver. While the objective may differ, we can still investigate
 where this work lies on our three axes.
 
-1.  **Order of enumeration---**In this work, the authors utilize
-    Syntax-Guided Synthesis (SyGuS) `\cite{alur2013sygus}`{=latex} to
+1.  **Order of enumeration**&mdash;In this work, the authors utilize
+    Syntax-Guided Synthesis (SyGuS)[1] to
     enumerate potential rewrite rules starting with a grammar.
     Enumeration starts with smaller terms and progressively explores
     larger ones while adhering to a specified size limit. This
     prioritizes \"simpler\" rewrite rules.
 
-2.  **Filtering---**The user provides a SyGuS specification, which
+2.  **Filtering**&mdash;The user provides a SyGuS specification, which
     \"acts as a filtering mechanism to discard terms that should not be
     included in rewrite rules.\" In addition, this work employs multiple
     techniques to filter out redundant or uninteresting terms,
@@ -382,7 +377,7 @@ where this work lies on our three axes.
     -   Congruence Closure: Removes terms that can be deduced from
         existing rules through congruence reasoning.
 
-3.  **Verification---**The paper introduces an optional mode in CVC4
+3.  **Verification**&mdash;The paper introduces an optional mode in CVC4
     that checks the soundness of the generated rewrite rules. This mode
     employs grammar-based sampling to find potential counterexamples
     where the original term and its rewritten form have different
@@ -407,7 +402,7 @@ This discussion can be found in Section 5 of the original work. Overall,
 the authors find that their solution performs better than existing ones
 in enumeration performance and equivalence checking. However, it is
 notable that for the larger grammars, the tools is unable to scale past
-2 or 3 terms---in line with observations from previous works which
+2 or 3 terms&mdash;in line with observations from previous works which
 enumerate terms based on a grammar (albeit with filtering).
 
 ## Theory Exploration
@@ -509,3 +504,79 @@ synthesis is an emerging area of research, and the projects discussed in
 these surveys are pioneering works in the domain. While we have seen a
 number of impactful use cases for rewrite rule synthesis in this survey,
 there may be many more yet to be discovered.
+
+# References
+
+[1]: Rajeev Alur, Rastislav Bodik, Garvit Juniwal, Milo M. K. Martin, Mukund Raghothaman, Sanjit A. Seshia, Rishabh
+Singh, Armando Solar-Lezama, Emina Torlak, and Abhishek Udupa. 2013. Syntax-guided synthesis. In 2013 Formal
+Methods in Computer-Aided Design. 1–8. https://doi.org/10.1109/FMCAD.2013.6679385
+
+[2]: Bruno Buchberger. 2000. Theory Exploration with Theorema. Analele Universitatii Din Timisoara, Seria Matematica-
+Informatica XXXVIII (01 2000), 9–32.
+
+[3]: Bruno Buchberger, Adrian Cr ˇaciun, Tudor Jebelean, Laura Kovács, Temur Kutsia, Koji Nakagawa, Florina Piroi,
+Nikolaj Popov, Judit Robu, Markus Rosenkranz, and Wolfgang Windsteiger. 2006. Theorema: Towards computer-aided
+mathematical theory exploration. Journal of Applied Logic 4, 4 (2006), 470–504. https://doi.org/10.1016/j.jal.2005.10.006
+Towards Computer Aided Mathematics.
+
+[4]: Samuel Coward, George A. Constantinides, and Theo Drane. 2023. Automating Constraint-Aware Datapath Optimiza-
+tion using E-Graphs. arXiv:2303.01839
+
+[5]: Gérard Huet. 1981. A complete proof of correctness of the Knuth-Bendix completion algorithm. J. Comput. System Sci.
+23, 1 (1981), 11–21. https://doi.org/10.1016/0022-0000(81)90002-7
+
+[6]: Donald E. Knuth and Peter B. Bendix. 1970. Simple Word Problems in Universal Algebras. In Computational Problems
+in Abstract Algebra, JOHN LEECH (Ed.). Pergamon, 263–297. https://doi.org/10.1016/B978-0-08-012975-4.50028-X
+
+[7]: Chandrakana Nandi, Max Willsey, Amy Zhu, Yisu Remy Wang, Brett Saiki, Adam Anderson, Adriana Schulz, Dan
+Grossman, and Zachary Tatlock. 2021. Rewrite Rule Inference Using Equality Saturation. Proc. ACM Program. Lang. 5,
+OOPSLA, Article 119 (oct 2021), 28 pages. https://doi.org/10.1145/3485496
+
+[8]: Julie L. Newcomb, Andrew Adams, Steven Johnson, Rastislav Bodik, and Shoaib Kamil. 2020. Verifying and improving
+Halide’s term rewriting system with program synthesis. Proc. ACM Program. Lang. 4, OOPSLA, Article 166 (nov 2020),
+28 pages. https://doi.org/10.1145/3428234
+
+[9]: Andres Nötzli, Andrew Reynolds, Haniel Barbosa, Aina Niemetz, Mathias Preiner, Clark Barrett, and Cesare Tinelli.
+2019. Syntax-Guided Rewrite Rule Enumeration for SMT Solvers. In Theory and Applications of Satisfiability Testing –
+SAT 2019, Mikoláš Janota and Inês Lynce (Eds.). Springer International Publishing, Cham, 279–297.
+
+[10]: Anjali Pal, Brett Saiki, Ryan Tjoa, Cynthia Richey, Amy Zhu, Oliver Flatt, Max Willsey, Zachary Tatlock, and Chan-
+drakana Nandi. 2023. Equality Saturation Theory Exploration à la Carte. Proc. ACM Program. Lang. 7, OOPSLA2,
+Article 258 (oct 2023), 29 pages. https://doi.org/10.1145/3622834
+
+[11]: Pavel Panchekha, Alex Sanchez-Stern, James R. Wilcox, and Zachary Tatlock. 2015. Automatically improving accuracy
+for floating point expressions. SIGPLAN Not. 50, 6 (jun 2015), 1–11. https://doi.org/10.1145/2813885.2737959
+
+[12]: Simon Peyton Jones, Andrew Tolmach, and Tony Hoare. 2001. Playing by the rules: rewriting as a practical optimisation
+technique in GHC. In 2001 Haskell Workshop (2001 haskell workshop ed.). ACM SIGPLAN. https://www.microsoft.
+com/en-us/research/publication/playing-by-the-rules-rewriting-as-a-practical-optimisation-technique-in-ghc/
+
+[13]: Jonathan Ragan-Kelley, Connelly Barnes, Andrew Adams, Sylvain Paris, Frédo Durand, and Saman Amarasinghe.
+2013. Halide: a language and compiler for optimizing parallelism, locality, and recomputation in image processing
+pipelines. In Proceedings of the 34th ACM SIGPLAN Conference on Programming Language Design and Implementation
+(Seattle, Washington, USA) (PLDI ’13). Association for Computing Machinery, New York, NY, USA, 519–530. https:
+//doi.org/10.1145/2491956.2462176
+
+[14]: Eytan Singher and Shachar Itzhaky. 2021. Theory Exploration Powered by Deductive Synthesis. Springer International
+Publishing, 125–148. https://doi.org/10.1007/978-3-030-81688-9_6
+
+[15]: Armando Solar-Lezama. 2009. The Sketching Approach to Program Synthesis. In Programming Languages and Systems,
+Zhenjiang Hu (Ed.). Springer Berlin Heidelberg, Berlin, Heidelberg, 4–13.
+
+[16]: Samuel Thomas and James Bornholt. 2024. Automatic Generation of Vectorizing Compilers for Customizable Digital
+Signal Processors. In Proceedings of the 29th ACM International Conference on Architectural Support for Programming
+Languages and Operating Systems, Volume 1 (La Jolla, CA, USA,) (ASPLOS ’24). Association for Computing Machinery,
+New York, NY, USA, 19–34. https://doi.org/10.1145/3617232.3624873
+
+[17]: Alexa VanHattum, Rachit Nigam, Vincent T. Lee, James Bornholt, and Adrian Sampson. 2021. Vectorization for digital
+signal processors via equality saturation. In Proceedings of the 26th ACM International Conference on Architectural
+Support for Programming Languages and Operating Systems (Virtual, USA) (ASPLOS ’21). Association for Computing
+Machinery, New York, NY, USA, 874–886. https://doi.org/10.1145/3445814.3446707
+
+[18]: Max Willsey, Chandrakana Nandi, Yisu Remy Wang, Oliver Flatt, Zachary Tatlock, and Pavel Panchekha. 2021.
+egg: Fast and extensible equality saturation. Proc. ACM Program. Lang. 5, POPL, Article 23 (jan 2021), 29 pages.
+https://doi.org/10.1145/3434304
+
+[19]: Yichen Yang, Phitchaya Mangpo Phothilimtha, Yisu Remy Wang, Max Willsey, Sudip Roy, and Jacques Pienaar.
+2021. Equality Saturation for Tensor Graph Superoptimization. In Proceedings of Machine Learning and Systems.
+arXiv:2101.01332
