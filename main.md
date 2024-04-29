@@ -148,13 +148,13 @@ influence on later work whose value we will discuss more extensively.
 ## Halide
 
 ![](figs/halide_bottomup.png)
-Figure 3 from Newcomb et
+*Figure 3 from Newcomb et
 al.[^8] explains how LHS
 patterns are mined from input expressions. In this case,
 $(z+2)+\texttt{min}(x,y-z)$ yields the candidate LHS terms on the right.
 All possible subterms are enumerated, plus copies of those terms where
 subterms of interest (colored in the figure) are replaced by a
-variable.
+variable.*
 
 Halide[^13], a domain-specific language for
 high-performance image processing pipelines, utilizes a term rewriting
@@ -210,12 +210,12 @@ impact on performance of the compiler itself.
 ## <a name="sec:ruler"></a>Ruler
 
 ![](figs/ruler_algo.png)
-Figure 4 from Ruler[^7] shows Ruler's core
+*Figure 4 from Ruler[^7] shows Ruler's core
 algorithm. Note that at each iteration, all terms up to size $i$ are
 added to the e-graph (Line 6, `add_terms()`). Equivalences between these
 terms are then identified via fingerprinting, and rewrite rules are
 extracted from newly crafted
-e-classes.
+e-classes.*
 
 Ruler[^7] uses equality saturation as a
 rewrite system on the domain of rewrite rules itself. The authors boil
@@ -314,9 +314,9 @@ e-graph of terms.
 
 ## Isaria
 ![](figs/isaria_dsl.png)
-Figure 1 from Isaria[^16]: the vector DSL
+*Figure 1 from Isaria[^16]: the vector DSL
 used in Isaria and
-Diospyros[^17].
+Diospyros[^17].*
 
 Diospyros[^17] utilizes e-graphs for
 auto-vectorization on digital signal processors (DSPs).
@@ -535,8 +535,7 @@ OOPSLA, Article 119 (oct 2021), 28 pages. https://doi.org/10.1145/3485496
 Halide’s term rewriting system with program synthesis. Proc. ACM Program. Lang. 4, OOPSLA, Article 166 (nov 2020),
 28 pages. https://doi.org/10.1145/3428234
 
-[^9]: Andres Nötzli, Andrew Reynolds, Haniel Barbosa, Aina Niemetz, Mathias Preiner, Clark Barrett, and Cesare Tinelli.
-2019. Syntax-Guided Rewrite Rule Enumeration for SMT Solvers. In Theory and Applications of Satisfiability Testing –
+[^9]: Andres Nötzli, Andrew Reynolds, Haniel Barbosa, Aina Niemetz, Mathias Preiner, Clark Barrett, and Cesare Tinelli. 2019. Syntax-Guided Rewrite Rule Enumeration for SMT Solvers. In Theory and Applications of Satisfiability Testing –
 SAT 2019, Mikoláš Janota and Inês Lynce (Eds.). Springer International Publishing, Cham, 279–297.
 
 [^10]: Anjali Pal, Brett Saiki, Ryan Tjoa, Cynthia Richey, Amy Zhu, Oliver Flatt, Max Willsey, Zachary Tatlock, and Chan-
@@ -550,8 +549,7 @@ for floating point expressions. SIGPLAN Not. 50, 6 (jun 2015), 1–11. https://d
 technique in GHC. In 2001 Haskell Workshop (2001 haskell workshop ed.). ACM SIGPLAN. https://www.microsoft.
 com/en-us/research/publication/playing-by-the-rules-rewriting-as-a-practical-optimisation-technique-in-ghc/
 
-[^13]: Jonathan Ragan-Kelley, Connelly Barnes, Andrew Adams, Sylvain Paris, Frédo Durand, and Saman Amarasinghe.
-2013. Halide: a language and compiler for optimizing parallelism, locality, and recomputation in image processing
+[^13]: Jonathan Ragan-Kelley, Connelly Barnes, Andrew Adams, Sylvain Paris, Frédo Durand, and Saman Amarasinghe. 2013. Halide: a language and compiler for optimizing parallelism, locality, and recomputation in image processing
 pipelines. In Proceedings of the 34th ACM SIGPLAN Conference on Programming Language Design and Implementation
 (Seattle, Washington, USA) (PLDI ’13). Association for Computing Machinery, New York, NY, USA, 519–530. https:
 //doi.org/10.1145/2491956.2462176
@@ -576,6 +574,5 @@ Machinery, New York, NY, USA, 874–886. https://doi.org/10.1145/3445814.3446707
 egg: Fast and extensible equality saturation. Proc. ACM Program. Lang. 5, POPL, Article 23 (jan 2021), 29 pages.
 https://doi.org/10.1145/3434304
 
-[^19]: Yichen Yang, Phitchaya Mangpo Phothilimtha, Yisu Remy Wang, Max Willsey, Sudip Roy, and Jacques Pienaar.
-2021. Equality Saturation for Tensor Graph Superoptimization. In Proceedings of Machine Learning and Systems.
+[^19]: Yichen Yang, Phitchaya Mangpo Phothilimtha, Yisu Remy Wang, Max Willsey, Sudip Roy, and Jacques Pienaar. 2021. Equality Saturation for Tensor Graph Superoptimization. In Proceedings of Machine Learning and Systems.
 arXiv:2101.01332
