@@ -356,7 +356,7 @@ to the solver. While the objective may differ, we can still investigate
 where this work lies on our three axes.
 
 1.  **Order of enumeration**&mdash;In this work, the authors utilize
-    Syntax-Guided Synthesis (SyGuS)[1] to
+    Syntax-Guided Synthesis (SyGuS)[^1] to
     enumerate potential rewrite rules starting with a grammar.
     Enumeration starts with smaller terms and progressively explores
     larger ones while adhering to a specified size limit. This
@@ -507,7 +507,7 @@ there may be many more yet to be discovered.
 
 # References
 
-[1]: Rajeev Alur, Rastislav Bodik, Garvit Juniwal, Milo M. K. Martin, Mukund Raghothaman, Sanjit A. Seshia, Rishabh
+[^1]: Rajeev Alur, Rastislav Bodik, Garvit Juniwal, Milo M. K. Martin, Mukund Raghothaman, Sanjit A. Seshia, Rishabh
 Singh, Armando Solar-Lezama, Emina Torlak, and Abhishek Udupa. 2013. Syntax-guided synthesis. In 2013 Formal
 Methods in Computer-Aided Design. 1–8. https://doi.org/10.1109/FMCAD.2013.6679385
 
