@@ -151,8 +151,8 @@ influence on later work whose value we will discuss more extensively.
 
 *Figure 3 from Newcomb et
 al.[^8] explains how LHS
-patterns are mined from input expressions. In this case,
-$(z+2)+\texttt{min}(x,y-z)$ yields the candidate LHS terms on the right.
+patterns are mined from input expressions. In this case,*
+$(z+2)+\texttt{min}(x,y-z)$ *yields the candidate LHS terms on the right.
 All possible subterms are enumerated, plus copies of those terms where
 subterms of interest (colored in the figure) are replaced by a
 variable.*
@@ -213,7 +213,7 @@ impact on performance of the compiler itself.
 ![](figs/ruler_algo.png)
 
 *Figure 4 from Ruler[^7] shows Ruler's core
-algorithm. Note that at each iteration, all terms up to size $i$ are
+algorithm. Note that at each iteration, all terms up to size* $i$ *are
 added to the e-graph (Line 6, `add_terms()`). Equivalences between these
 terms are then identified via fingerprinting, and rewrite rules are
 extracted from newly crafted
