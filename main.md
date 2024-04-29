@@ -148,6 +148,7 @@ influence on later work whose value we will discuss more extensively.
 ## Halide
 
 ![](figs/halide_bottomup.png)
+
 *Figure 3 from Newcomb et
 al.[^8] explains how LHS
 patterns are mined from input expressions. In this case,
@@ -210,6 +211,7 @@ impact on performance of the compiler itself.
 ## <a name="sec:ruler"></a>Ruler
 
 ![](figs/ruler_algo.png)
+
 *Figure 4 from Ruler[^7] shows Ruler's core
 algorithm. Note that at each iteration, all terms up to size $i$ are
 added to the e-graph (Line 6, `add_terms()`). Equivalences between these
@@ -314,6 +316,7 @@ e-graph of terms.
 
 ## Isaria
 ![](figs/isaria_dsl.png)
+
 *Figure 1 from Isaria[^16]: the vector DSL
 used in Isaria and
 Diospyros[^17].*
