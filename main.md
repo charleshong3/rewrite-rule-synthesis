@@ -20,8 +20,7 @@ abstract: |
   rewrite rule synthesis can replace manual rule-writing.
 author:
 - Charles Hong
-bibliography:
-- ref.bib
+bibliography: ref.bib
 date: April 29, 2024
 title: "Rewrite Rule Synthesis: A Survey"
 ---
@@ -36,16 +35,17 @@ optimizations can be built up from many smaller ones, applied in
 different orders. Declarative program optimization also allows for
 program optimizations to be expressed independently from program
 function, and such techniques have been successfully adopted in systems
-such as Halide [@jrk2013halide], a domain-specific language for writing
-high-performance image processing pipelines. Term rewriting systems have
-been applied to more general languages as well; for example, Haskell has
-long supported user-written rewrite rules in the Glasgow Haskell
-Compiler [@peytonjones2001playing]. More recently, equality saturation
-and e-graphs (short for equivalence graphs) have gained significant
-attention, with performant implementations such as the egg
-library [@willsey2021egg] enabling e-graphs to be used for a variety of
-applications, ranging from tensor graphs [@yang2021tensat] to
-optimization of hardware arithmetic datapaths [@coward2023automating].
+such as Halide `\cite{jrk2013halide}`{=latex}, a domain-specific
+language for writing high-performance image processing pipelines. Term
+rewriting systems have been applied to more general languages as well;
+for example, Haskell has long supported user-written rewrite rules in
+the Glasgow Haskell Compiler `\cite{peytonjones2001playing}`{=latex}.
+More recently, equality saturation and e-graphs (short for equivalence
+graphs) have gained significant attention, with performant
+implementations such as the egg library `\cite{willsey2021egg}`{=latex}
+enabling e-graphs to be used for a variety of applications, ranging from
+tensor graphs `\cite{yang2021tensat}`{=latex} to optimization of
+hardware arithmetic datapaths `\cite{coward2023automating}`{=latex}.
 E-graphs have even been applied to rewrite rule synthesis, as discussed
 later in this work.
 
@@ -104,17 +104,17 @@ this survey on a per-work basis.
 
 # Knuth-Bendix Completion
 
-Knuth-Bendix completion [@knuth1970completion], proposed in 1970 and
-named after Donald Knuth and Peter Bendix, is a key predecessor to
-rewrite rule synthesis. It is a semidecision procedure for the word
-problem, i.e. the problem of deciding whether two expressions are
-equivalent with respect to a set of rewrite relations. Given a base set
-of equations and a reduction order on terms, if it succeeds, it provides
-a confluent and terminating term rewriting system that can be used to
-solve the word problem for the given equational theory. However, it may
-also fail or not terminate. In order to consider Knuth-Bendix
-completion's merits as a rewrite rule synthesis technique, we can take a
-look at where it lies along the dimensions discussed in
+Knuth-Bendix completion `\cite{knuth1970completion}`{=latex}, proposed
+in 1970 and named after Donald Knuth and Peter Bendix, is a key
+predecessor to rewrite rule synthesis. It is a semidecision procedure
+for the word problem, i.e. the problem of deciding whether two
+expressions are equivalent with respect to a set of rewrite relations.
+Given a base set of equations and a reduction order on terms, if it
+succeeds, it provides a confluent and terminating term rewriting system
+that can be used to solve the word problem for the given equational
+theory. However, it may also fail or not terminate. In order to consider
+Knuth-Bendix completion's merits as a rewrite rule synthesis technique,
+we can take a look at where it lies along the dimensions discussed in
 Section [2](#sec:challenges){reference-type="ref"
 reference="sec:challenges"}.
 
@@ -135,9 +135,9 @@ reference="sec:challenges"}.
     we know that such an ordering exists, and in the algorithm, all
     generated rules $l \rightarrow r$ have $l>r$.
 
-3.  **Verification---**Huet [@huet1980complete] showed in 1980 that when
-    the algorithm terminates, it defines a valid semidecision algorithm
-    for the word problem.
+3.  **Verification---**Huet `\cite{huet1980complete}`{=latex} showed in
+    1980 that when the algorithm terminates, it defines a valid
+    semidecision algorithm for the word problem.
 
 As it originates from computational mathematics, the initial examples
 provided for the usefulness of Knuth-Bendix completion relate mostly to
@@ -150,15 +150,17 @@ influence on later work whose value we will discuss more extensively.
 
 ## Halide
 
-Halide [@jrk2013halide], a domain-specific language for high-performance
-image processing pipelines, utilizes a term rewriting system with over a
-thousand hand-written rewrite rules (as of the time of Newcomb et al.'s
-rewrite rule synthesis for Halide [@newcomb2020verifyinghalide]).
-Newcomb et al. attempt to recreate Halide's existing rules, as well as
-generate new ones by applying program synthesis techniques.
+Halide `\cite{jrk2013halide}`{=latex}, a domain-specific language for
+high-performance image processing pipelines, utilizes a term rewriting
+system with over a thousand hand-written rewrite rules (as of the time
+of Newcomb et al.'s rewrite rule synthesis for
+Halide `\cite{newcomb2020verifyinghalide}`{=latex}). Newcomb et al.
+attempt to recreate Halide's existing rules, as well as generate new
+ones by applying program synthesis techniques.
 
-![Figure 3 from Newcomb et al. [@newcomb2020verifyinghalide] explains
-how LHS patterns are mined from input expressions. In this case,
+![Figure 3 from Newcomb et
+al. `\cite{newcomb2020verifyinghalide}`{=latex} explains how LHS
+patterns are mined from input expressions. In this case,
 $(z+2)+\texttt{min}(x,y-z)$ yields the candidate LHS terms on the right.
 All possible subterms are enumerated, plus copies of those terms where
 subterms of interest (colored in the figure) are replaced by a
@@ -172,7 +174,8 @@ variable.](figs/halide_bottomup.png){#fig:halide_bottomup}
     commutativity are applied to the LHS, and the resulting term is
     passed to the existing TRS, and 2) counterexample-guided inductive
     synthesis (CEGIS), used in sketching for program
-    synthesis [@solar2009sketching], to superoptimize the LHS.
+    synthesis `\cite{solar2009sketching}`{=latex}, to superoptimize the
+    LHS.
 
 2.  **Filtering---**Rules are pruned heuristically based on term size;
     the authors specifically state that terms must have seven or fewer
@@ -209,17 +212,18 @@ impact on performance of the compiler itself.
 
 ## Ruler {#sec:ruler}
 
-![Figure 4 from Ruler [@nandi2021ruler] shows Ruler's core algorithm.
-Note that at each iteration, all terms up to size $i$ are added to the
-e-graph (Line 6, `add_terms()`). Equivalences between these terms are
-then identified via fingerprinting, and rewrite rules are extracted from
-newly crafted e-classes.](figs/ruler_algo.png){#fig:ruler_algo}
+![Figure 4 from Ruler `\cite{nandi2021ruler}`{=latex} shows Ruler's core
+algorithm. Note that at each iteration, all terms up to size $i$ are
+added to the e-graph (Line 6, `add_terms()`). Equivalences between these
+terms are then identified via fingerprinting, and rewrite rules are
+extracted from newly crafted
+e-classes.](figs/ruler_algo.png){#fig:ruler_algo}
 
-Ruler [@nandi2021ruler] uses equality saturation as a rewrite system on
-the domain of rewrite rules itself. The authors boil rule inference down
-into three key steps, and demonstrate the effectiveness of their
-approach by implementing rule synthesis for booleans, bitvectors, and
-rationals. The three steps are as follows:
+Ruler `\cite{nandi2021ruler}`{=latex} uses equality saturation as a
+rewrite system on the domain of rewrite rules itself. The authors boil
+rule inference down into three key steps, and demonstrate the
+effectiveness of their approach by implementing rule synthesis for
+booleans, bitvectors, and rationals. The three steps are as follows:
 
 1.  **Enumerate** terms into a set $T$. Terms are enumerated from the
     target domain and represented in an e-graph (equality graph), a data
@@ -250,11 +254,12 @@ valid equivalences are applied to the e-graph, and so on in a loop.
 However, one key drawback is that given a grammar, Ruler adds *all*
 terms of a certain size to the e-graph at each iteration, which means
 the number of terms grows combinatorially with the size of the grammar.
-As shown in the followup work Enumo [@pal2023enumo], for grammars like
-that of Halide, Ruler times out after just one iteration. Nonetheless,
-with Herbie [@panchekha2015herbie], a tool for improving floating point
-accuracy whose original ruleset has 52 rules, Ruler demonstrates an
-ability to outperform a hand-designed ruleset.
+As shown in the followup work Enumo `\cite{pal2023enumo}`{=latex}, for
+grammars like that of Halide, Ruler times out after just one iteration.
+Nonetheless, with Herbie `\cite{panchekha2015herbie}`{=latex}, a tool
+for improving floating point accuracy whose original ruleset has 52
+rules, Ruler demonstrates an ability to outperform a hand-designed
+ruleset.
 
 For **Verification**, Ruler supports various validation methods for
 candidate rules, and the authors provide their analysis of which
@@ -290,11 +295,11 @@ complex semantics.
 
 ## Enumo
 
-Enumo [@pal2023enumo] expands on Ruler by proposing a DSL for rewrite
-rule synthesis tools. This DSL provides operators that allow users to
-\"strategically guide rule inference and incrementally build rulesets\"
-by programmatically growing and shrinking the e-graph of terms, as well
-as the set of rules.
+Enumo `\cite{pal2023enumo}`{=latex} expands on Ruler by proposing a DSL
+for rewrite rule synthesis tools. This DSL provides operators that allow
+users to \"strategically guide rule inference and incrementally build
+rulesets\" by programmatically growing and shrinking the e-graph of
+terms, as well as the set of rules.
 
 In addition to the DSL, the key technique Enumo introduces that was not
 present in Ruler is \"fast-forwarding,\" where user-provided information
@@ -312,14 +317,14 @@ e-graph of terms.
 
 ## Isaria
 
-![Figure 1 from Isaria [@thomas2024isaria]: the vector DSL used in
-Isaria and
-Diospyros [@vanhattum2021diospyros].](figs/isaria_dsl.png){#fig:isaria_dsl}
+![Figure 1 from Isaria `\cite{thomas2024isaria}`{=latex}: the vector DSL
+used in Isaria and
+Diospyros `\cite{vanhattum2021diospyros}`{=latex}.](figs/isaria_dsl.png){#fig:isaria_dsl}
 
-Diospyros [@vanhattum2021diospyros] utilizes e-graphs for
+Diospyros `\cite{vanhattum2021diospyros}`{=latex} utilizes e-graphs for
 auto-vectorization on digital signal processors (DSPs).
-Isaria [@thomas2024isaria] rebuilds this tool, but instead of
-hand-writing rewrite rules, uses Ruler (with some modifications) to
+Isaria `\cite{thomas2024isaria}`{=latex} rebuilds this tool, but instead
+of hand-writing rewrite rules, uses Ruler (with some modifications) to
 automatically generate them. The resulting ruleset beats Diospyros
 perfromance in most cases. The modifications to Ruler are as follows:
 
@@ -348,19 +353,19 @@ term e-graph.
 
 ## CVC4
 
-Nötzli et al. [@notzli2019cvc4] build a tool that automatically
-generating rules to rewrite terms for Satisfiability Modulo Theories
-(SMT) solvers. In this case, the goal of rewrites is to pre-process
-input terms by simplifying them to a form that is friendly to the
-solver. While the objective may differ, we can still investigate where
-this work lies on our three axes.
+Nötzli et al. `\cite{notzli2019cvc4}`{=latex} build a tool that
+automatically generating rules to rewrite terms for Satisfiability
+Modulo Theories (SMT) solvers. In this case, the goal of rewrites is to
+pre-process input terms by simplifying them to a form that is friendly
+to the solver. While the objective may differ, we can still investigate
+where this work lies on our three axes.
 
 1.  **Order of enumeration---**In this work, the authors utilize
-    Syntax-Guided Synthesis (SyGuS) [@alur2013sygus] to enumerate
-    potential rewrite rules starting with a grammar. Enumeration starts
-    with smaller terms and progressively explores larger ones while
-    adhering to a specified size limit. This prioritizes \"simpler\"
-    rewrite rules.
+    Syntax-Guided Synthesis (SyGuS) `\cite{alur2013sygus}`{=latex} to
+    enumerate potential rewrite rules starting with a grammar.
+    Enumeration starts with smaller terms and progressively explores
+    larger ones while adhering to a specified size limit. This
+    prioritizes \"simpler\" rewrite rules.
 
 2.  **Filtering---**The user provides a SyGuS specification, which
     \"acts as a filtering mechanism to discard terms that should not be
@@ -407,23 +412,24 @@ enumerate terms based on a grammar (albeit with filtering).
 
 ## Theory Exploration
 
-Theory exploration [@buchberger2000theorema; @buchberger2006theorema] is
-an approach to generating lemmas for verification, where valid lemmas
+Theory
+exploration `\cite{buchberger2000theorema, buchberger2006theorema}`{=latex}
+is an approach to generating lemmas for verification, where valid lemmas
 are eagerly generated rather than being guided by a proof goal or
 written by hand. These lemmas can be viewed as analogous to rewrite
 rules, since they represent bidirectional equivalence relations used to
 modify expressions into a more useful state. In fact,
-Enumo [@pal2023enumo], discussed above, is presented as a theory
-exploration tool. Since this survey is primarily focused on program
-optimization, we will briefly discuss one related work; however, this is
-far from a comprehensive survey of theory exploration.
+Enumo `\cite{pal2023enumo}`{=latex}, discussed above, is presented as a
+theory exploration tool. Since this survey is primarily focused on
+program optimization, we will briefly discuss one related work; however,
+this is far from a comprehensive survey of theory exploration.
 
-TheSy [@singher2021thesy] introduces a *symbolic* technique for theory
-exploration. Like in Ruler and Enumo, the authors utilize grammar-based
-enumeration and build an e-graph of terms. They call their technique
-Syntax-Guided Enumeration, or SyGuE. Unlike these works, TheSy uses
-symbolic observational equivalence (SOE), where terms are
-equivalence-checked on symbolic inputs. Redundant conjectures are
+TheSy `\cite{singher2021thesy}`{=latex} introduces a *symbolic*
+technique for theory exploration. Like in Ruler and Enumo, the authors
+utilize grammar-based enumeration and build an e-graph of terms. They
+call their technique Syntax-Guided Enumeration, or SyGuE. Unlike these
+works, TheSy uses symbolic observational equivalence (SOE), where terms
+are equivalence-checked on symbolic inputs. Redundant conjectures are
 filtered out and remaining ones are verified using induction based on
 algebraic data structure definitions. Overall, the similarity of this
 work to the above, even when the objective is verification rather than
