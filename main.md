@@ -20,7 +20,6 @@ abstract: |
   rewrite rule synthesis can replace manual rule-writing.
 author:
 - Charles Hong
-bibliography: ref.bib
 date: April 29, 2024
 title: "Rewrite Rule Synthesis: A Survey"
 ---
@@ -35,17 +34,17 @@ optimizations can be built up from many smaller ones, applied in
 different orders. Declarative program optimization also allows for
 program optimizations to be expressed independently from program
 function, and such techniques have been successfully adopted in systems
-such as Halide `\cite{jrk2013halide}`{=latex}, a domain-specific
+such as Halide[^13], a domain-specific
 language for writing high-performance image processing pipelines. Term
 rewriting systems have been applied to more general languages as well;
 for example, Haskell has long supported user-written rewrite rules in
-the Glasgow Haskell Compiler `\cite{peytonjones2001playing}`{=latex}.
+the Glasgow Haskell Compiler[^12].
 More recently, equality saturation and e-graphs (short for equivalence
 graphs) have gained significant attention, with performant
-implementations such as the egg library `\cite{willsey2021egg}`{=latex}
+implementations such as the egg library[^18]
 enabling e-graphs to be used for a variety of applications, ranging from
-tensor graphs `\cite{yang2021tensat}`{=latex} to optimization of
-hardware arithmetic datapaths `\cite{coward2023automating}`{=latex}.
+tensor graphs[^19] to optimization of
+hardware arithmetic datapaths[^4].
 E-graphs have even been applied to rewrite rule synthesis, as discussed
 later in this work.
 
@@ -104,7 +103,7 @@ this survey on a per-work basis.
 
 # Knuth-Bendix Completion
 
-Knuth-Bendix completion `\cite{knuth1970completion}`{=latex}, proposed
+Knuth-Bendix completion[^6], proposed
 in 1970 and named after Donald Knuth and Peter Bendix, is a key
 predecessor to rewrite rule synthesis. It is a semidecision procedure
 for the word problem, i.e. the problem of deciding whether two
@@ -133,7 +132,7 @@ we can take a look at where it lies along the dimensions discussed [above](#sec:
     we know that such an ordering exists, and in the algorithm, all
     generated rules $l \rightarrow r$ have $l>r$.
 
-3.  **Verification**&mdash;Huet `\cite{huet1980complete}`{=latex} showed in
+3.  **Verification**&mdash;Huet[^5] showed in
     1980 that when the algorithm terminates, it defines a valid
     semidecision algorithm for the word problem.
 
@@ -150,18 +149,18 @@ influence on later work whose value we will discuss more extensively.
 
 ![](figs/halide_bottomup.png)
 Figure 3 from Newcomb et
-al. `\cite{newcomb2020verifyinghalide}`{=latex} explains how LHS
+al.[^8] explains how LHS
 patterns are mined from input expressions. In this case,
 $(z+2)+\texttt{min}(x,y-z)$ yields the candidate LHS terms on the right.
 All possible subterms are enumerated, plus copies of those terms where
 subterms of interest (colored in the figure) are replaced by a
 variable.
 
-Halide `\cite{jrk2013halide}`{=latex}, a domain-specific language for
+Halide[^13], a domain-specific language for
 high-performance image processing pipelines, utilizes a term rewriting
 system with over a thousand hand-written rewrite rules (as of the time
 of Newcomb et al.'s rewrite rule synthesis for
-Halide `\cite{newcomb2020verifyinghalide}`{=latex}). Newcomb et al.
+Halide[^8]). Newcomb et al.
 attempt to recreate Halide's existing rules, as well as generate new
 ones by applying program synthesis techniques.
 
@@ -172,7 +171,7 @@ ones by applying program synthesis techniques.
     commutativity are applied to the LHS, and the resulting term is
     passed to the existing TRS, and 2) counterexample-guided inductive
     synthesis (CEGIS), used in sketching for program
-    synthesis `\cite{solar2009sketching}`{=latex}, to superoptimize the
+    synthesis[^15], to superoptimize the
     LHS.
 
 2.  **Filtering**&mdash;Rules are pruned heuristically based on term size;
@@ -211,14 +210,14 @@ impact on performance of the compiler itself.
 ## <a name="sec:ruler"></a>Ruler
 
 ![](figs/ruler_algo.png)
-Figure 4 from Ruler `\cite{nandi2021ruler}`{=latex} shows Ruler's core
+Figure 4 from Ruler[^7] shows Ruler's core
 algorithm. Note that at each iteration, all terms up to size $i$ are
 added to the e-graph (Line 6, `add_terms()`). Equivalences between these
 terms are then identified via fingerprinting, and rewrite rules are
 extracted from newly crafted
 e-classes.
 
-Ruler `\cite{nandi2021ruler}`{=latex} uses equality saturation as a
+Ruler[^7] uses equality saturation as a
 rewrite system on the domain of rewrite rules itself. The authors boil
 rule inference down into three key steps, and demonstrate the
 effectiveness of their approach by implementing rule synthesis for
@@ -252,9 +251,9 @@ valid equivalences are applied to the e-graph, and so on in a loop.
 However, one key drawback is that given a grammar, Ruler adds *all*
 terms of a certain size to the e-graph at each iteration, which means
 the number of terms grows combinatorially with the size of the grammar.
-As shown in the followup work Enumo `\cite{pal2023enumo}`{=latex}, for
+As shown in the followup work Enumo[^10], for
 grammars like that of Halide, Ruler times out after just one iteration.
-Nonetheless, with Herbie `\cite{panchekha2015herbie}`{=latex}, a tool
+Nonetheless, with Herbie[^11], a tool
 for improving floating point accuracy whose original ruleset has 52
 rules, Ruler demonstrates an ability to outperform a hand-designed
 ruleset.
@@ -293,7 +292,7 @@ complex semantics.
 
 ## Enumo
 
-Enumo `\cite{pal2023enumo}`{=latex} expands on Ruler by proposing a DSL
+Enumo[^10] expands on Ruler by proposing a DSL
 for rewrite rule synthesis tools. This DSL provides operators that allow
 users to \"strategically guide rule inference and incrementally build
 rulesets\" by programmatically growing and shrinking the e-graph of
@@ -315,13 +314,13 @@ e-graph of terms.
 
 ## Isaria
 ![](figs/isaria_dsl.png)
-Figure 1 from Isaria `\cite{thomas2024isaria}`{=latex}: the vector DSL
+Figure 1 from Isaria[^16]: the vector DSL
 used in Isaria and
-Diospyros `\cite{vanhattum2021diospyros}`{=latex}.
+Diospyros[^17].
 
-Diospyros `\cite{vanhattum2021diospyros}`{=latex} utilizes e-graphs for
+Diospyros[^17] utilizes e-graphs for
 auto-vectorization on digital signal processors (DSPs).
-Isaria `\cite{thomas2024isaria}`{=latex} rebuilds this tool, but instead
+Isaria[^16] rebuilds this tool, but instead
 of hand-writing rewrite rules, uses Ruler (with some modifications) to
 automatically generate them. The resulting ruleset beats Diospyros
 perfromance in most cases. The modifications to Ruler are as follows:
@@ -348,7 +347,7 @@ term e-graph.
 
 ## CVC4
 
-Nötzli et al. `\cite{notzli2019cvc4}`{=latex} build a tool that
+Nötzli et al.[^9] build a tool that
 automatically generating rules to rewrite terms for Satisfiability
 Modulo Theories (SMT) solvers. In this case, the goal of rewrites is to
 pre-process input terms by simplifying them to a form that is friendly
@@ -408,18 +407,18 @@ enumerate terms based on a grammar (albeit with filtering).
 ## Theory Exploration
 
 Theory
-exploration `\cite{buchberger2000theorema, buchberger2006theorema}`{=latex}
+exploration[^2][^3]
 is an approach to generating lemmas for verification, where valid lemmas
 are eagerly generated rather than being guided by a proof goal or
 written by hand. These lemmas can be viewed as analogous to rewrite
 rules, since they represent bidirectional equivalence relations used to
 modify expressions into a more useful state. In fact,
-Enumo `\cite{pal2023enumo}`{=latex}, discussed above, is presented as a
+Enumo[^10], discussed above, is presented as a
 theory exploration tool. Since this survey is primarily focused on
 program optimization, we will briefly discuss one related work; however,
 this is far from a comprehensive survey of theory exploration.
 
-TheSy `\cite{singher2021thesy}`{=latex} introduces a *symbolic*
+TheSy[^14] introduces a *symbolic*
 technique for theory exploration. Like in Ruler and Enumo, the authors
 utilize grammar-based enumeration and build an e-graph of terms. They
 call their technique Syntax-Guided Enumeration, or SyGuE. Unlike these
@@ -511,72 +510,72 @@ there may be many more yet to be discovered.
 Singh, Armando Solar-Lezama, Emina Torlak, and Abhishek Udupa. 2013. Syntax-guided synthesis. In 2013 Formal
 Methods in Computer-Aided Design. 1–8. https://doi.org/10.1109/FMCAD.2013.6679385
 
-[2]: Bruno Buchberger. 2000. Theory Exploration with Theorema. Analele Universitatii Din Timisoara, Seria Matematica-
+[^2]: Bruno Buchberger. 2000. Theory Exploration with Theorema. Analele Universitatii Din Timisoara, Seria Matematica-
 Informatica XXXVIII (01 2000), 9–32.
 
-[3]: Bruno Buchberger, Adrian Cr ˇaciun, Tudor Jebelean, Laura Kovács, Temur Kutsia, Koji Nakagawa, Florina Piroi,
+[^3]: Bruno Buchberger, Adrian Cr ˇaciun, Tudor Jebelean, Laura Kovács, Temur Kutsia, Koji Nakagawa, Florina Piroi,
 Nikolaj Popov, Judit Robu, Markus Rosenkranz, and Wolfgang Windsteiger. 2006. Theorema: Towards computer-aided
 mathematical theory exploration. Journal of Applied Logic 4, 4 (2006), 470–504. https://doi.org/10.1016/j.jal.2005.10.006
 Towards Computer Aided Mathematics.
 
-[4]: Samuel Coward, George A. Constantinides, and Theo Drane. 2023. Automating Constraint-Aware Datapath Optimiza-
+[^4]: Samuel Coward, George A. Constantinides, and Theo Drane. 2023. Automating Constraint-Aware Datapath Optimiza-
 tion using E-Graphs. arXiv:2303.01839
 
-[5]: Gérard Huet. 1981. A complete proof of correctness of the Knuth-Bendix completion algorithm. J. Comput. System Sci.
+[^5]: Gérard Huet. 1981. A complete proof of correctness of the Knuth-Bendix completion algorithm. J. Comput. System Sci.
 23, 1 (1981), 11–21. https://doi.org/10.1016/0022-0000(81)90002-7
 
-[6]: Donald E. Knuth and Peter B. Bendix. 1970. Simple Word Problems in Universal Algebras. In Computational Problems
+[^6]: Donald E. Knuth and Peter B. Bendix. 1970. Simple Word Problems in Universal Algebras. In Computational Problems
 in Abstract Algebra, JOHN LEECH (Ed.). Pergamon, 263–297. https://doi.org/10.1016/B978-0-08-012975-4.50028-X
 
-[7]: Chandrakana Nandi, Max Willsey, Amy Zhu, Yisu Remy Wang, Brett Saiki, Adam Anderson, Adriana Schulz, Dan
+[^7]: Chandrakana Nandi, Max Willsey, Amy Zhu, Yisu Remy Wang, Brett Saiki, Adam Anderson, Adriana Schulz, Dan
 Grossman, and Zachary Tatlock. 2021. Rewrite Rule Inference Using Equality Saturation. Proc. ACM Program. Lang. 5,
 OOPSLA, Article 119 (oct 2021), 28 pages. https://doi.org/10.1145/3485496
 
-[8]: Julie L. Newcomb, Andrew Adams, Steven Johnson, Rastislav Bodik, and Shoaib Kamil. 2020. Verifying and improving
+[^8]: Julie L. Newcomb, Andrew Adams, Steven Johnson, Rastislav Bodik, and Shoaib Kamil. 2020. Verifying and improving
 Halide’s term rewriting system with program synthesis. Proc. ACM Program. Lang. 4, OOPSLA, Article 166 (nov 2020),
 28 pages. https://doi.org/10.1145/3428234
 
-[9]: Andres Nötzli, Andrew Reynolds, Haniel Barbosa, Aina Niemetz, Mathias Preiner, Clark Barrett, and Cesare Tinelli.
+[^9]: Andres Nötzli, Andrew Reynolds, Haniel Barbosa, Aina Niemetz, Mathias Preiner, Clark Barrett, and Cesare Tinelli.
 2019. Syntax-Guided Rewrite Rule Enumeration for SMT Solvers. In Theory and Applications of Satisfiability Testing –
 SAT 2019, Mikoláš Janota and Inês Lynce (Eds.). Springer International Publishing, Cham, 279–297.
 
-[10]: Anjali Pal, Brett Saiki, Ryan Tjoa, Cynthia Richey, Amy Zhu, Oliver Flatt, Max Willsey, Zachary Tatlock, and Chan-
+[^10]: Anjali Pal, Brett Saiki, Ryan Tjoa, Cynthia Richey, Amy Zhu, Oliver Flatt, Max Willsey, Zachary Tatlock, and Chan-
 drakana Nandi. 2023. Equality Saturation Theory Exploration à la Carte. Proc. ACM Program. Lang. 7, OOPSLA2,
 Article 258 (oct 2023), 29 pages. https://doi.org/10.1145/3622834
 
-[11]: Pavel Panchekha, Alex Sanchez-Stern, James R. Wilcox, and Zachary Tatlock. 2015. Automatically improving accuracy
+[^11]: Pavel Panchekha, Alex Sanchez-Stern, James R. Wilcox, and Zachary Tatlock. 2015. Automatically improving accuracy
 for floating point expressions. SIGPLAN Not. 50, 6 (jun 2015), 1–11. https://doi.org/10.1145/2813885.2737959
 
-[12]: Simon Peyton Jones, Andrew Tolmach, and Tony Hoare. 2001. Playing by the rules: rewriting as a practical optimisation
+[^12]: Simon Peyton Jones, Andrew Tolmach, and Tony Hoare. 2001. Playing by the rules: rewriting as a practical optimisation
 technique in GHC. In 2001 Haskell Workshop (2001 haskell workshop ed.). ACM SIGPLAN. https://www.microsoft.
 com/en-us/research/publication/playing-by-the-rules-rewriting-as-a-practical-optimisation-technique-in-ghc/
 
-[13]: Jonathan Ragan-Kelley, Connelly Barnes, Andrew Adams, Sylvain Paris, Frédo Durand, and Saman Amarasinghe.
+[^13]: Jonathan Ragan-Kelley, Connelly Barnes, Andrew Adams, Sylvain Paris, Frédo Durand, and Saman Amarasinghe.
 2013. Halide: a language and compiler for optimizing parallelism, locality, and recomputation in image processing
 pipelines. In Proceedings of the 34th ACM SIGPLAN Conference on Programming Language Design and Implementation
 (Seattle, Washington, USA) (PLDI ’13). Association for Computing Machinery, New York, NY, USA, 519–530. https:
 //doi.org/10.1145/2491956.2462176
 
-[14]: Eytan Singher and Shachar Itzhaky. 2021. Theory Exploration Powered by Deductive Synthesis. Springer International
+[^14]: Eytan Singher and Shachar Itzhaky. 2021. Theory Exploration Powered by Deductive Synthesis. Springer International
 Publishing, 125–148. https://doi.org/10.1007/978-3-030-81688-9_6
 
-[15]: Armando Solar-Lezama. 2009. The Sketching Approach to Program Synthesis. In Programming Languages and Systems,
+[^15]: Armando Solar-Lezama. 2009. The Sketching Approach to Program Synthesis. In Programming Languages and Systems,
 Zhenjiang Hu (Ed.). Springer Berlin Heidelberg, Berlin, Heidelberg, 4–13.
 
-[16]: Samuel Thomas and James Bornholt. 2024. Automatic Generation of Vectorizing Compilers for Customizable Digital
+[^16]: Samuel Thomas and James Bornholt. 2024. Automatic Generation of Vectorizing Compilers for Customizable Digital
 Signal Processors. In Proceedings of the 29th ACM International Conference on Architectural Support for Programming
 Languages and Operating Systems, Volume 1 (La Jolla, CA, USA,) (ASPLOS ’24). Association for Computing Machinery,
 New York, NY, USA, 19–34. https://doi.org/10.1145/3617232.3624873
 
-[17]: Alexa VanHattum, Rachit Nigam, Vincent T. Lee, James Bornholt, and Adrian Sampson. 2021. Vectorization for digital
+[^17]: Alexa VanHattum, Rachit Nigam, Vincent T. Lee, James Bornholt, and Adrian Sampson. 2021. Vectorization for digital
 signal processors via equality saturation. In Proceedings of the 26th ACM International Conference on Architectural
 Support for Programming Languages and Operating Systems (Virtual, USA) (ASPLOS ’21). Association for Computing
 Machinery, New York, NY, USA, 874–886. https://doi.org/10.1145/3445814.3446707
 
-[18]: Max Willsey, Chandrakana Nandi, Yisu Remy Wang, Oliver Flatt, Zachary Tatlock, and Pavel Panchekha. 2021.
+[^18]: Max Willsey, Chandrakana Nandi, Yisu Remy Wang, Oliver Flatt, Zachary Tatlock, and Pavel Panchekha. 2021.
 egg: Fast and extensible equality saturation. Proc. ACM Program. Lang. 5, POPL, Article 23 (jan 2021), 29 pages.
 https://doi.org/10.1145/3434304
 
-[19]: Yichen Yang, Phitchaya Mangpo Phothilimtha, Yisu Remy Wang, Max Willsey, Sudip Roy, and Jacques Pienaar.
+[^19]: Yichen Yang, Phitchaya Mangpo Phothilimtha, Yisu Remy Wang, Max Willsey, Sudip Roy, and Jacques Pienaar.
 2021. Equality Saturation for Tensor Graph Superoptimization. In Proceedings of Machine Learning and Systems.
 arXiv:2101.01332
